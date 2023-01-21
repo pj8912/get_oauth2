@@ -1,22 +1,23 @@
-from urllib.parse import urlencode
-import webbrowser
+import requests
+token_endpoint = "https://oauth2.googleapis.com/token"
 
-# Set the client ID and redirect URI
-client_id = "your_client_id"
-redirect_uri = "your_redirect_uri"
+client_id = "YOUR_CLIENT_ID"
+client_secret = "YOUR_CLIENT_SECRET"
+code = "YOUR_CODE"
 
-# Set the scope of access
-scope = "https://www.googleapis.com/auth/blogger"
+redirect_uri = "http://localhost"
 
-# Build the authorization URL
-query_params = {
-    "response_type": "code",
-    "client_id": client_id,
-    "redirect_uri": redirect_uri,
-    "scope": scope
+data  = {
+
+        "grant_type" : "authorization_code",
+        "code" : code,
+        "redirect_uri" : redirect_uri,
+        "client_id" : client_id,
+        "client_secret" : client_secret,
+        "scope" : "https://www.googleapis.com/auth/blogger"
 }
 
-url = f"https://accounts.google.com/o/oauth2/auth?{urlencode(query_params)}"
+response = requests.post(token_endpoint, data =data)
+token = response.json()["access_token"]
+print(token)
 
-# Open the authorization URL in the user's web browser
-webbrowser.open(url)
